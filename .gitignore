@@ -1,7 +1,5 @@
-### IntelliJ IDEA ###
-out/
-!**/src/main/**/out/
-!**/src/test/**/out/
+GIT_CONFIG*
+config
 
 ### Eclipse ###
 .apt_generated
@@ -15,18 +13,29 @@ bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
 
+### IntelliJ IDEA ###
+.idea/*
+!.idea/encodings.xml
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+### VS Code ###
+.vscode/
+
+# Maven
+log/
+target/
+
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
 /dist/
 /nbdist/
 /.nb-gradle/
-
-### VS Code ###
-.vscode/
-
-### Mac OS ###
-.DS_Store
 
 # Compiled class file
 *.class
@@ -51,25 +60,6 @@ bin/
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
-
-GIT_CONFIG
-
-# Eclipse
-.classpath
-.project
-.settings/
-
-# Intellij
-.idea/
-*.iml
-*.iws
-
-# Mac
-.DS_Store
-
-# Maven
-log/
-target/
 
 PROJECTS_LYR_TOOLS_JAVA-TOOLS_JAVA.ffs_batch
 PROJECTS_LYR_TOOLS_JAVA-TOOLS_JAVA.ffs_gui
