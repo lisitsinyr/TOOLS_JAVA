@@ -70,6 +70,7 @@ GIT_CONFIG*
 config*
 *.log
 *.bat
+PROJECTS_LYR*
 
 ### КАТАЛОГИ ###
 clickers/
