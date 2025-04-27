@@ -1,0 +1,37 @@
+﻿https://t.me/java_tips_and_tricks/1118
+⌨️ Класс Formatter
+
+java.util.Formatter позволяет создавать отформатированные строки по аналогии с printf() в C.
+
+Formatter может форматировать числа, дату, время, выравнивать текст, управлять пробелами и отступами, а так же работать с локалями.
+
+
+import java.util.Formatter;
+
+public class FormatterExample {
+    public static void main(String[] args) {
+        try (Formatter formatter = new Formatter()) {
+            formatter.format("Привет, %s! Тебе %d лет.", "Андрей", 25);
+            System.out.println(formatter);
+            // Привет, Андрей! Тебе 25 лет.
+        }
+    }
+}
+
+Можно не просто форматировать строки, но и записывать их в файл:
+
+import java.io.FileNotFoundException;
+import java.util.Formatter;
+
+public class FileWriteExample {
+    public static void main(String[] args) throws FileNotFoundException {
+        try (Formatter formatter = new Formatter("output.txt")) {
+            formatter.format("Имя: %s, Возраст: %d%n", "Алиса", 30);
+        }
+    }
+}
+
+Теперь в файле output.txt будет строка:
+Имя: Алиса, Возраст: 30
+
+#java #Formatter
