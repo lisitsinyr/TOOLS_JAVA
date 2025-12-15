@@ -147,39 +147,12 @@ rem beginfunction
     rem OPTION
     rem -------------------------------------
     set OPTION=
-    set O1_Name=O1
-    set O1_Caption=O1_Caption
-    set O1_Default=O1_Default
-    set O1=!O1_Default!
-    set PN_CAPTION=!O1_Caption!
-    rem call :Read_P O1 !O1! || exit /b 1
-    rem echo O1:!O1!
-    rem if defined O1 (
-    rem     set OPTION=!OPTION! -!O1_Name! "!O1!"
-    rem ) else (
-    rem     echo INFO: O1 [O1_Name:!O1_Name! O1_Caption:!O1_Caption!] not defined ...
-    rem )
     rem echo OPTION:!OPTION!
 
     rem -------------------------------------
     rem ARGS
     rem -------------------------------------
     set ARGS=
-    set A1_Name=Comment
-    set A1_Caption=Comment
-    set A1_Default=Git Bash commit update
-    set A1_Default=%date:~6,4%%date:~3,2%%date:~0,2%%TIME:~0,2%%TIME:~3,2%%TIME:~6,2%
-    set A1=!A1_Default!
-    set PN_CAPTION=!A1_Caption!
-    rem call :Read_P A1 !A1! || exit /b 1
-    rem echo A1:!A1!
-    rem if defined A1 (
-    rem     set ARGS=!ARGS! "!A1!"
-    rem ) else (
-    rem     echo ERROR: A1 [A1_Name:!A1_Name! A1_Caption:!A1_Caption!] not defined ... 
-    rem     set OK=
-    rem     exit /b 1
-    rem )
     rem echo ARGS:!ARGS!
     
     exit /b 0
@@ -250,9 +223,6 @@ rem beginfunction
     
     call :MAIN_SET || exit /b 1
 
-    rem if defined OK if not defined Read_N (
-    rem     call :MAIN_CHECK_PARAMETR %* || exit /b 1
-    rem )
     call :MAIN_CHECK_PARAMETR %* || exit /b 1
         
     if defined OK (
@@ -272,14 +242,14 @@ rem =================================================
 rem =================================================
 rem LYRConst.bat
 rem =================================================
-:LYRConst
+:LYRConstINIT
 %LIB_BAT%\LYRConst.bat %*
 exit /b 0
 
 rem =================================================
 rem LYRDEPLOY.bat
 rem =================================================
-:LYRDEPLOY
+:LYRDEPLOYINIT
 %LIB_BAT%\LYRDEPLOY.bat %*
 exit /b 0
 :REPO_WORK
@@ -295,7 +265,7 @@ exit /b 0
 rem =================================================
 rem LYRLIB.bat
 rem =================================================
-:LYRLIB
+:LYRLIBINIT
 %LIB_BAT%\LYRLIB.bat %*
 exit /b 0
 :SET_LIB
@@ -311,7 +281,7 @@ exit /b 0
 rem =================================================
 rem LYRDateTime.bat
 rem =================================================
-:LYRDateTime
+:LYRDateTimeINIT
 %LIB_BAT%\LYRDateTime.bat %*
 exit /b 0
 :YYYYMMDDHHMMSS
@@ -324,7 +294,7 @@ exit /b 0
 rem =================================================
 rem LYRFileUtils.bat
 rem =================================================
-:LYRFileUtils
+:LYRFileUtilsINIT
 %LIB_BAT%\LYRFileUtils.bat %*
 exit /b 0
 :ExtractFileDir
@@ -370,7 +340,7 @@ exit /b 0
 rem =================================================
 rem LYRLog.bat
 rem =================================================
-:LYRLog
+:LYRLogINIT
 %LIB_BAT%\LYRLog.bat %*
 exit /b 0
 :AddLog
@@ -389,7 +359,7 @@ exit /b 0
 rem =================================================
 rem LYRStrUtils.bat
 rem =================================================
-:LYRStrUtils
+:LYRStrUtilsINIT
 %LIB_BAT%\LYRStrUtils.bat %*
 exit /b 0
 :TrimLeft
@@ -417,7 +387,7 @@ exit /b 0
 rem =================================================
 rem LYRSupport.bat
 rem =================================================
-:LYRSupport
+:LYRSupportINIT
 %LIB_BAT%\LYRSupport.bat %*
 exit /b 0
 :PressAnyKey
@@ -457,7 +427,7 @@ exit /b 0
 rem =================================================
 rem LYRParserINI.bat
 rem =================================================
-:LYRParserINI
+:LYRParserINIINIT
 %LIB_BAT%\LYRParserINI.bat %*
 exit /b 0
 :GetINI
@@ -476,7 +446,7 @@ exit /b 0
 rem =================================================
 rem LYRConsole.bat
 rem =================================================
-:LYRConsole
+:LYRConsoleINIT
 %LIB_BAT%\LYRConsole.bat %*
 exit /b 0
 :Write

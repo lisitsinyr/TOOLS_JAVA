@@ -90,57 +90,6 @@ rem beginfunction
         echo DEBUG: procedure !FUNCNAME! ...
     )
 
-    rem ------------------------------------------------
-    rem PROJECT_GROUP
-    rem ------------------------------------------------
-    if not defined PROJECT_GROUP (
-        call :GetINIParametr !PROJECT_INI! general PROJECT_GROUP || exit /b 1
-    )
-    rem echo PROJECT_GROUP:!PROJECT_GROUP!
-
-    rem ------------------------------------------------
-    rem PROJECT_NAME
-    rem ------------------------------------------------
-    if not defined PROJECT_NAME (
-        call :GetINIParametr !PROJECT_INI! general PROJECT_NAME || exit /b 1
-    )
-    rem echo PROJECT_NAME:!PROJECT_NAME!
-
-    call :ExtractFileName !SCRIPT_FILEDIR!
-    echo ExtractFileName:!ExtractFileName!
-
-    rem -------------------------------------------------------------------
-    rem DIR_GROUP_ROOT - каталог группы проектов
-    rem -------------------------------------------------------------------
-    if not defined DIR_GROUP_ROOT (
-        call :GetINIParametr !PROJECT_INI! general DIR_GROUP_ROOT || exit /b 1
-    )
-    rem echo DIR_GROUP_ROOT:!DIR_GROUP_ROOT!
-
-    rem -------------------------------------------------------------------
-    rem DIR_PROJECTS_ROOT - каталог группы проектов
-    rem -------------------------------------------------------------------
-    set DIR_PROJECTS_ROOT=!DIR_GROUP_ROOT!\!PROJECT_GROUP!
-    rem if not defined DIR_PROJECTS_ROOT (
-    rem     call :GetINIParametr !PROJECT_INI! general DIR_PROJECTS_ROOT || exit /b 1
-    rem )
-    echo DIR_PROJECTS_ROOT:!DIR_PROJECTS_ROOT!
-
-    rem ------------------------------------------------
-    rem DIR_PROJECT
-    rem ------------------------------------------------
-    set DIR_PROJECT=!DIR_PROJECTS_ROOT!
-    rem echo DIR_PROJECT:!DIR_PROJECT!
-
-    rem ------------------------------------------------
-    rem DIR_PROJECT_NAME
-    rem ------------------------------------------------
-    set DIR_PROJECT_NAME=!DIR_PROJECTS_ROOT!\!PROJECT_NAME!
-    echo DIR_PROJECT_NAME:!DIR_PROJECT_NAME!
-
-    rem call :GetINIParametr !REPO_INI! general REPO_NAME || exit /b 1
-    rem echo REPO_NAME:!REPO_NAME!
-
     exit /b 0
 rem endfunction
 
@@ -159,61 +108,54 @@ rem beginfunction
     rem OPTION
     rem -------------------------------------
     set OPTION=
-    set O1_Name=O1
-    set O1_Caption=O1_Caption
-    set O1_Default=
-    set O1=!O1_Default!
-    set PN_CAPTION=!O1_Caption!
-    rem call :Read_P O1 !O1! || exit /b 1
-    rem echo O1:!O1!
-    rem if defined O1 (
-    rem     set OPTION=!OPTION! -!O1_Name! "!O1!"
-    rem ) else (
-    rem     echo INFO: O1 [O1_Name:!O1_Name! O1_Caption:!O1_Caption!] not defined ...
-    rem )
+     
+    rem -------------------------------------------------------------------
+    rem PROJECT_GROUP
+    rem -------------------------------------------------------------------
+    set VarName=PROJECT_GROUP
+    rem echo VarName:!VarName!
+    set VarValue=%~1
+    if not defined VarValue (
+        set VarValue=""
+    ) else (
+        if defined !VarName! (
+            set VarValue=!%VarName%!
+        ) else (
+            set VarValue=%~1
+        )
+    )
+    rem echo VarValue:!VarValue!
+    if not defined !VarName! (
+        call :Read_P !VarName! "!VarValue!" "PROJECT_GROUP" "" || exit /b 1
+    )
+
+    rem -------------------------------------------------------------------
+    rem PROJECT_NAME
+    rem -------------------------------------------------------------------
+    set VarName=PROJECT_NAME
+    rem echo VarName:!VarName!
+    set VarValue=%~1
+    if not defined VarValue (
+        set VarValue=""
+    ) else (
+        if defined !VarName! (
+            set VarValue=!%VarName%!
+        ) else (
+            set VarValue=%~2
+        )
+    )
+    rem echo VarValue:!VarValue!
+
+    if not defined !VarName! (
+        call :Read_P !VarName! "!VarValue!" "PROJECT_NAME" "" || exit /b 1
+    )
+
     rem echo OPTION:!OPTION!
 
     rem -------------------------------------
     rem ARGS
     rem -------------------------------------
     set ARGS=
-
-    set A1_Name=DIR_PROJECTS_ROOT
-    set A1_Caption=DIR_PROJECTS_ROOT
-    set A1_Default=%1
-    if not defined A1 (
-        set A1_Default=!DIR_PROJECTS_ROOT!
-    )
-    set A1=!A1_Default!
-    set PN_CAPTION=!A1_Caption!
-    call :Read_P A1 !A1! || exit /b 1
-    rem echo A1:!A1!
-    if defined A1 (
-        set ARGS=!ARGS! "!A1!"
-        set DIR_PROJECTS_ROOT=!A1!
-    ) else (
-        set DIR_PROJECTS_ROOT=
-        echo INFO: A1 [A1_Name:!A1_Name! A1_Caption:!A1_Caption!] not defined ... 
-    )
-
-    set A2_Name=PROJECT_NAME
-    set A2_Caption=PROJECT_NAME
-    set A2_Default=%2
-    if not defined A2 (
-        set A2_Default=!PROJECT_NAME!
-    )
-    set A2=!A2_Default!
-    set PN_CAPTION=!A2_Caption!
-    call :Read_P A2 !A2! || exit /b 1
-    rem echo A2:!A2!
-    if defined A2 (
-        set ARGS=!ARGS! !A2!
-        set PROJECT_NAME=!A2!
-    ) else (
-        set PROJECT_NAME=
-        echo INFO: A2 [A2_Name:!A2_Name! A2_Caption:!A2_Caption!] not defined ... 
-    )
-
     rem echo ARGS:!ARGS!
 
     exit /b 0
@@ -230,8 +172,7 @@ rem beginfunction
         echo DEBUG: procedure !FUNCNAME! ...
     )
 
-    rem call :REPO_WORK !DIR_PROJECT_NAME! 1 || exit /b 1
-    call :DEPLOY_PROJECT
+    call :DEPLOY_PROJECT !PROJECT_GROUP! !PROJECT_NAME!
 
     exit /b 0
 rem endfunction
@@ -297,7 +238,7 @@ rem =================================================
 rem =================================================
 rem LYRConsole.bat
 rem =================================================
-:LYRConsole
+:LYRConsoleINIT
 %LIB_BAT%\LYRConsole.bat %*
 exit /b 0
 :ConsoleTEST_00
@@ -372,16 +313,18 @@ exit /b 0
 :WriteTEXT
 %LIB_BAT%\LYRConsole.bat %*
 exit /b 0
+
 rem =================================================
 rem LYRConst.bat
 rem =================================================
-:LYRConst
+:LYRConstINIT
 %LIB_BAT%\LYRConst.bat %*
 exit /b 0
+
 rem =================================================
 rem LYRDateTime.bat
 rem =================================================
-:LYRDateTime
+:LYRDateTimeINIT
 %LIB_BAT%\LYRDateTime.bat %*
 exit /b 0
 :YYYYMMDDHHMMSS
@@ -390,10 +333,11 @@ exit /b 0
 :DateTime
 %LIB_BAT%\LYRDateTime.bat %*
 exit /b 0
+
 rem =================================================
 rem LYRDEPLOY.bat
 rem =================================================
-:LYRDEPLOY
+:LYRDEPLOYINIT
 %LIB_BAT%\LYRDEPLOY.bat %*
 exit /b 0
 :CopyFilesFromPATTERN
@@ -423,10 +367,11 @@ exit /b 0
 :PULL_PROJECT
 %LIB_BAT%\LYRDEPLOY.bat %*
 exit /b 0
+
 rem =================================================
 rem LYRDEPLOYTools.bat
 rem =================================================
-:LYRDEPLOYTools
+:LYRDEPLOYToolsINIT
 %LIB_BAT%\LYRDEPLOYTools.bat %*
 exit /b 0
 :UPDATE_TOOLS_BAT_SCRIPTS_BAT
@@ -480,10 +425,11 @@ exit /b 0
 :CLEAR_TOOLS_SH
 %LIB_BAT%\LYRDEPLOYTools.bat %*
 exit /b 0
+
 rem =================================================
 rem LYRFileUtils.bat
 rem =================================================
-:LYRFileUtils
+:LYRFileUtilsINIT
 %LIB_BAT%\LYRFileUtils.bat %*
 exit /b 0
 :ExtractFileDir
@@ -525,10 +471,11 @@ exit /b 0
 :XCOPY_FILES
 %LIB_BAT%\LYRFileUtils.bat %*
 exit /b 0
+
 rem =================================================
 rem LYRLIB.bat
 rem =================================================
-:LYRLIB
+:LYRLIBINIT
 %LIB_BAT%\LYRLIB.bat %*
 exit /b 0
 :SET_LIB
@@ -552,10 +499,11 @@ exit /b 0
 :__SET_LOG
 %LIB_BAT%\LYRLIB.bat %*
 exit /b 0
+
 rem =================================================
 rem LYRLog.bat
 rem =================================================
-:LYRLog
+:LYRLogINIT
 %LIB_BAT%\LYRLog.bat %*
 exit /b 0
 :__SETVarLog
@@ -582,10 +530,11 @@ exit /b 0
 :StopLogFile
 %LIB_BAT%\LYRLog.bat %*
 exit /b 0
+
 rem =================================================
 rem LYRParserINI.bat
 rem =================================================
-:LYRParserINI
+:LYRParserINIINIT
 %LIB_BAT%\LYRParserINI.bat %*
 exit /b 0
 :SetINI
@@ -600,22 +549,24 @@ exit /b 0
 :GetFileParser
 %LIB_BAT%\LYRParserINI.bat %*
 exit /b 0
+
 rem =================================================
 rem LYRPY.bat
 rem =================================================
-:LYRPY
+:LYRPYINIT
 %LIB_BAT%\LYRPY.bat %*
 exit /b 0
-:PY_ENV_START
+:VENV_START
 %LIB_BAT%\LYRPY.bat %*
 exit /b 0
-:PY_ENV_STOP
+:VENV_STOP
 %LIB_BAT%\LYRPY.bat %*
 exit /b 0
+
 rem =================================================
 rem LYRStrUtils.bat
 rem =================================================
-:LYRStrUtils
+:LYRStrUtilsINIT
 %LIB_BAT%\LYRStrUtils.bat %*
 exit /b 0
 :TrimLeft
@@ -639,10 +590,11 @@ exit /b 0
 :ListToStr
 %LIB_BAT%\LYRStrUtils.bat %*
 exit /b 0
+
 rem =================================================
 rem LYRSupport.bat
 rem =================================================
-:LYRSupport
+:LYRSupportINIT
 %LIB_BAT%\LYRSupport.bat %*
 exit /b 0
 :PressAnyKey
